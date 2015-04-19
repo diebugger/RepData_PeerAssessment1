@@ -14,7 +14,7 @@ In order to load and preprocess the data, the following libraries are needed:
 - lubridate  
 - ggplot2  
 
-```{r includes, echo=FALSE, results='hide', warning=FALSE, message=FALSE}
+```{r includes, results='hide', warning=FALSE, message=FALSE}
 library("dplyr")
 library("knitr")
 library("lubridate")
@@ -36,7 +36,7 @@ clean_activity <- activity[!is.na(activity$steps),]
 
 ## What is mean total number of steps taken per day?
 From the cleaned data above, we can produce the following histogram:  
-```{r histogram, echo=FALSE, fig.height=6, fig.width=8}
+```{r histogram, fig.height=6, fig.width=8}
 clean_activity <- clean_activity %>% group_by(date)
 stepsByDay <- clean_activity %>% summarise_each(funs(sum))
 stepsByDay <- stepsByDay[, 1:2]
@@ -56,7 +56,7 @@ median(stepsByDay$steps)
 
 ## What is the average daily activity pattern?
 On a daily basis, we can average all the activities on each time interval, thus creating an activity pattern:  
-```{r daily_pattern, echo=FALSE, fig.height=6, fig.width=8}
+```{r daily_pattern, fig.height=6, fig.width=8}
 # group by interval
 clean_activity <- clean_activity %>% group_by(interval)
 # calculate mean steps and remove unused variables
@@ -98,6 +98,8 @@ for (i in index)
   activity_filled[i,1] = avg_step
 }
 ```
+
+Using the imputed values, here's the new histrogram we got:  
 ```{r, fig.height=6, fig.width=8}
 # Make a histogram of the total number of steps taken each day 
 # and Calculate and report the mean and median total number of steps taken per day. 
@@ -137,7 +139,7 @@ sd(stepsByDayFilled$steps)
 
 ## Are there differences in activity patterns between weekdays and weekends?
 Analyzing the datset according to the classification "Weekday" or "Weekend", we notice a significant difference in the activity pattern.  
-```{r factoring, echo=FALSE, results='hide'}
+```{r factoring, results='hide'}
 # Create a new factor variable in the dataset with two levels – “weekday” and “weekend” 
 # indicating whether a given date is a weekday or weekend day.
 days <- weekdays(activity_filled$date)
@@ -148,7 +150,7 @@ activity_filled$classification <- days
 
 This difference consists in the shift of the time period when an intense activity is performed: as shown in the chart below, during weekdays the most significant activity is performed during morning time, while during weekends we notice an increment in the afternoon hours.  
 
-```{r weekdiff, echo=FALSE, fig.height=6, fig.width=8}
+```{r weekdiff, fig.height=6, fig.width=8}
 # Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) 
 # and the average number of steps taken, averaged across all weekday days or weekend days (y-axis).
 g <- ggplot(activity_filled, aes(interval, steps))
